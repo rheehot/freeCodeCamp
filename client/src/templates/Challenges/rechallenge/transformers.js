@@ -67,7 +67,7 @@ async function loadPresetEnv() {
   /* eslint-enable no-inline-comments */
 
   babelOptionsJSBase = {
-    presets: [presetEnv]
+    presets: [[...presetEnv, { modules: false }]]
   };
   babelOptionsJS = {
     ...babelOptionsJSBase,
