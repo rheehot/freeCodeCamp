@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect';
 import { SearchBox } from 'react-instantsearch-dom';
-import { HotKeys, ObserveKeys } from 'react-hotkeys';
+import { HotKeys, ObserveKeys, configure } from 'react-hotkeys';
 import { isEqual } from 'lodash';
 
 import {
@@ -44,6 +44,19 @@ const mapDispatchToProps = dispatch =>
   );
 
 const placeholder = 'Search 6,000+ tutorials';
+
+// Prevent whitespace from breaking
+// up and down hot keys
+// Note: Figure out why this isn't working!
+configure({
+  ignoreEventsCondition: keyEvent => {
+    console.log(keyEvent.key);
+    if (keyEvent.key === ' ') {
+      return true;
+    }
+    return false;
+  }
+});
 
 export class SearchBar extends Component {
   constructor(props) {
@@ -183,7 +196,7 @@ export class SearchBar extends Component {
             <label className='fcc_sr_only' htmlFor='fcc_instantsearch'>
               Search
             </label>
-            <ObserveKeys>
+            <ObserveKeys except={['Space']}>
               <SearchBox
                 focusShortcuts={[83, 191]}
                 onChange={this.handleChange}
